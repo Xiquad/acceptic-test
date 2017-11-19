@@ -1,0 +1,30 @@
+<div class="app">
+  <mat-card class="card">
+    <mat-form-field>
+      <input matInput placeholder="Enter an URL" [(ngModel)]="embedUrl" (keyup)="onEmbed($event)">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select [(value)]="selectedSource" placeholder="Source">
+          <mat-option value="youtube">YouTube</mat-option>
+          <mat-option value="instagram">Instagram</mat-option>
+        </mat-select>
+      </mat-form-field>
+    <button mat-button [disabled]=!selectedSource (click)="onEmbed()">Embed</button>
+  </mat-card>
+  <mat-card class="card" *ngIf="selectedSource==='youtube'">
+    <mat-form-field>
+      <input matInput placeholder="Search YouTube" [(ngModel)]="searchQuery" (keyup)="onVideoSearch($event)">
+    </mat-form-field>
+    <button mat-button [disabled]="searchQuery.length < 2" (click)="onVideoSearch()">Search</button>
+  </mat-card>
+  <mat-card class="card" *ngFor="let video of loadedVideos">
+    <div class="video-title">{{video.snippet.title}}</div>
+    <button mat-button (click)="play(video.id.videoId)">Play</button>
+  </mat-card>
+  <mat-card class="card">
+    <h4 *ngIf=!frameUrl>{{status}}</h4>
+    <iframe *ngIf=frameUrl id="ytplayer" type="text/html"width="100%" height="360"
+    [src]="frameUrl"
+    frameborder="0"></iframe>
+  </mat-card>
+</div>
